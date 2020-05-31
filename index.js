@@ -16,10 +16,17 @@ io.on('connection', (socket) => {
   socket.on('send-message', (message) => {
     io.emit('message', {msg: message.text, user: socket.username, createdAt: new Date()});    
   });
+
+  socket.on('error', function (err) {
+    console.log('received error from client:', socket.id);
+    console.log(err);
+  });
+
 });
- 
+
 var port = process.env.PORT || 3001;
  
-server.listen(port, function(){
+server.listen(port, function(err){
+  if (err) throw err
    console.log('listening in http://localhost:' + port);
 });
